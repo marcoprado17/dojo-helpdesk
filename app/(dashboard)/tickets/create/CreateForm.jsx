@@ -19,19 +19,26 @@ export default function CreateForm() {
       title,
       body,
       priority,
-      user_email: 'marco.prado@seja.ai'
     }
 
-    const response = await fetch('http://localhost:4000/tickets', {
+    const response = await fetch('http://localhost:3000/api/tickets', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(ticket)
     })
 
-    if (response.status == 201) {
+    const json = await response.json()
+
+    if (json.error) {
+      console.log(json.error)
+    }
+
+    if (json.data) {
       router.refresh()
       router.push('/tickets')
     }
+
+    setIsLoading(false)
   }
 
   return (
